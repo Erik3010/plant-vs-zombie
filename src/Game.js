@@ -78,12 +78,23 @@ class Game {
     this.shovel = null;
     this.shovelActiveRect = null;
     this.sunPointText = null;
+    this.playerNameText = null;
+    this.scoreText = null;
+    this.timeText = null;
 
     this.shovelMode = false;
 
     this.particles = [];
+
+    this.playerName = null;
+    this.level = null;
+    this.score = 0;
+    this.time = 0;
   }
-  async init() {
+  async init({ playerName, level }) {
+    this.playerName = playerName;
+    this.level = level;
+
     await this.preloadAssets();
 
     this.generateGameUI();
@@ -264,6 +275,36 @@ class Game {
         this.shovelMode = !this.shovelMode;
       },
     });
+
+    this.playerNameText = new Text({
+      ctx: this.ctx,
+      x: 450,
+      y: 35,
+      text: `Username: ${this.playerName}`,
+      fontSize: 18,
+      fontWeight: "bold",
+      color: "#fff",
+    });
+
+    this.scoreText = new Text({
+      ctx: this.ctx,
+      x: 450,
+      y: 55,
+      text: `Score: ${this.score}`,
+      fontSize: 18,
+      fontWeight: "bold",
+      color: "#fff",
+    });
+
+    this.timeText = new Text({
+      ctx: this.ctx,
+      x: 450,
+      y: 75,
+      text: `Time: ${this.time}`,
+      fontSize: 18,
+      fontWeight: "bold",
+      color: "#fff",
+    });
   }
   generateLawnmowers() {
     this.lawnmowers.forEach((_, index) => {
@@ -366,8 +407,15 @@ class Game {
     setTimeout(this.generateZombies.bind(this), 2000);
   }
   renderGameUI() {
+    this.sunPointText.updateText(this.sunPoint);
+    this.scoreText.updateText(`Score: ${this.score}`);
+    this.timeText.updateText(`Time: ${this.time}`);
+
     this.sunPointText.draw();
     this.shovel.draw();
+    this.playerNameText.draw();
+    this.scoreText.draw();
+    this.timeText.draw();
 
     this.shovelMode && this.shovelActiveRect.draw();
   }

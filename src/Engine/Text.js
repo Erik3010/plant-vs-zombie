@@ -28,6 +28,9 @@ class Text extends Drawable {
     this.ctx.fillStyle = this.color;
     this.ctx.fillText(this.text, this.x, this.y);
   }
+  updateText(text) {
+    this.text = text;
+  }
 }
 
 export default Text;
